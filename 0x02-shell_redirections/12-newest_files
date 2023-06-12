@@ -1,2 +1,4 @@
-#!bin/bash
-ls -t1 | head 
+#!/bin/bash
+ls -t1 | head#!/bin/bash
+ls -t1 | head#!/bin/bash
+ls -t1 | head
