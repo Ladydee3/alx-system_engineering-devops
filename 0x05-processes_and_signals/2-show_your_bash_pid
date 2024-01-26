@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+#list of current processes containing name bash
+#shellcheck dispable=SC2009
+ps auxf | grep bash
