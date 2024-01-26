@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
-#uses pkill to end 4
+#This is a script that 4-to_infinity_and_beyond process
+
 pkill -f ./4-to_inifinty_and_beyond
