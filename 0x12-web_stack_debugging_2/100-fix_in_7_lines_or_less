@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#Bug server fixed
+chmod 644 /ect/nginx/nginx.conf
+sed -Ei 's/\s*#?\s*user .*/user nginx;/' /etc/nginx/nginx.conf
+sed -Ei 's/(listen (\[::\]:)?80) /\180 /' /etc/nginx/site-enable/defualt
+pkill apache 2
+su nginx -s /bin/bash -c 'service nginx restart'
