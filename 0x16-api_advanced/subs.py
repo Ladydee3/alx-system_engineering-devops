@@ -14,9 +14,9 @@ def number_of_subscribers(subreddit):
                 print("No data found in the response.")
                 return 0
         else:
-            print("Error: Received status code {}".format(response.status_code))
+            print(f"Error: Received status code {response.status_code}")
             return 0
     except requests.exceptions.RequestException as e:
-        print("Request failed: {}".format(e))
+        print(f"Request failed: {e}")
         return 0
 
