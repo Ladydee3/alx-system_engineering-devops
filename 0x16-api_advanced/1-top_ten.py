@@ -2,23 +2,42 @@
 '''
     this module contains the function top_ten
 '''
-import requests
-from sys import argv
 
+import requests
+import sys
+import json
 
 def top_ten(subreddit):
-    '''
-        returns the top ten posts for a given subreddit
-    '''
-    user = {'User-Agent': 'Lizzie'}
-    url = requests.get('https://www.reddit.com/r/{}/hot/.json?limit=10'
-                       .format(subreddit), headers=user).json()
+    url = "(link unavailable)".format(subreddit)
+    headers = {"User-Agent": "Custom"}
+    params = {"limit": 10}
+
     try:
-        for post in url.get('data').get('children'):
-            print(post.get('data').get('title'))
-    except Exception:
-        print(None)
+        response = requests.get(url, headers=headers, params=params)
+        response.raise_for_status()  # Raise an exception for 4xx or 5xx status codes
+    except requests.exceptions.RequestException as e:
+        print(f"Error: {e}")
+        return
 
+    try:
+        data = response.json()
+    except json.JSONDecodeError:
+        print("Failed to decode JSON response")
+        return
 
+    if "data" in data and "children" in data["data"]:
+        for post in data["data"]["children"]:
+            title = post["data"]["title"]
+            print(title)
+    else:
+        print("No posts found")
+
+# Example usage:
 if __name__ == "__main__":
-    top_ten(argv[1])
+    if len(sys.argv) != 2:
+        print("Usage: python3 (link unavailable) <subreddit>")
+        sys.exit(1)
+
+    subreddit = sys.argv[1]
+    top_ten(subreddit)
+
