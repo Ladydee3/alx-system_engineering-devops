@@ -1,24 +1,24 @@
 #!/usr/bin/python3
-""" Exporting csv files"""
-import json
+'''
+    this module contains the function top_ten
+'''
 import requests
-import sys
+from sys import argv
 
 
 def top_ten(subreddit):
-    """Read reddit API and return top 10 hotspots """
-    username = 'ledbag123'
-    password = 'Reddit72'
-    user_pass_dict = {'user': username, 'passwd': password, 'api_type': 'json'}
-    headers = {'user-agent': '/u/ledbag123 API Python for Holberton School'}
-    url = 'https://www.reddit.com/r/{}/hot.json'.format(subreddit)
-    client = requests.session()
-    client.headers = headers
-    r = client.get(url, allow_redirects=False)
-    if r.status_code == 200:
-        list_titles = r.json()['data']['children']
-        for a in list_titles[:10]:
-            print(a['data']['title'])
-    else:
-        return(print("None"))
+    '''
+        returns the top ten posts for a given subreddit
+    '''
+    user = {'User-Agent': 'Lizzie'}
+    url = requests.get('https://www.reddit.com/r/{}/hot/.json?limit=10'
+                       .format(subreddit), headers=user).json()
+    try:
+        for post in url.get('data').get('children'):
+            print(post.get('data').get('title'))
+    except Exception:
+        print(None)
 
+
+if __name__ == "__main__":
+    top_ten(argv[1])
