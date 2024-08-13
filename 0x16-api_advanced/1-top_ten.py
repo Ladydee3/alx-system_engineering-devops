@@ -1,22 +1,32 @@
 #!/usr/bin/python3
-"""Contains top_ten function"""
-import requests
+'''
+    this module contains the fuctions top_ten
 
+'''
+import requests
+import sys
 
 def top_ten(subreddit):
-    """Print the titles of the 10 hottest posts on a given subreddit."""
-    url = "https://www.reddit.com/r/{}/hot/.json".format(subreddit)
-    headers = {
-        "User-Agent": "0x16-api_advanced:project:\
-v1.0.0 (by /u/firdaus_cartoon_jr)"
-    }
-    params = {
-        "limit": 10
-    }
-    response = requests.get(url, headers=headers, params=params,
-                            allow_redirects=False)
-    if response.status_code == 404:
-        print("None")
-        return
-    results = response.json().get("data")
-    [print(c.get("data").get("title")) for c in results.get("children")]
+    url = f"https://www.reddit.com/r/{subreddit}/top/.json?limit=10"
+    headers = {'User-Agent': 'Mozilla/5.0'}
+    response = requests.get(url, headers=headers)
+    
+    try:
+        response.raise_for_status()  # This will raise an HTTPError if the HTTP request returned an unsuccessful status code
+        results = response.json().get("data")
+        if results:
+            for post in results.get("children", []):
+                print(post.get("data", {}).get("title"))
+        else:
+            print("No data found.")
+    except requests.exceptions.HTTPError as http_err:
+        print(f"HTTP error occurred: {http_err}")
+    except requests.exceptions.RequestException as req_err:
+        print(f"Request error occurred: {req_err}")
+    except ValueError:
+        print("Invalid JSON received:")
+        print(response.text)  # Print the response text for debugging
+
+if __name__ == "__main__":
+    top_ten(sys.argv[1])
+
