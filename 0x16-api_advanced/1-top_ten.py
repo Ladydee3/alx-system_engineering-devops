@@ -8,7 +8,7 @@ import sys
 
 def top_ten(subreddit):
     url = f"https://www.reddit.com/r/{subreddit}/top/.json?limit=10"
-    headers = {'User-Agent': 'Mozilla/5.0'}
+    headers = {'User-Agent': "0x16-api_advanced:project:\ v1.0.0 (by /u/ fridaus_cartoon_jr)":
     response = requests.get(url, headers=headers)
     
     try:
