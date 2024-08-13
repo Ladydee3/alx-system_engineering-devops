@@ -1,39 +1,24 @@
 #!/usr/bin/python3
-"""Contains top_ten function"""
+'''
+    this module contains the function top_ten
+'''
 import requests
+from sys import argv
 
 
 def top_ten(subreddit):
-    """Print the titles of the 10 hottest posts on a given subreddit."""
-    url = "https://www.reddit.com/r/{}/hot/.json".format(subreddit)
-    headers = {
-        "User-Agent": "0x16-api_advanced:project:v1.0.0 (by /u/firdaus_cartoon_jr)"
-    }
-    params = {
-        "limit": 10
-    }
-
+    '''
+        returns the top ten posts for a given subreddit
+    '''
+    user = {'User-Agent': 'Lizzie'}
+    url = requests.get('https://www.reddit.com/r/{}/hot/.json?limit=10'
+                       .format(subreddit), headers=user).json()
     try:
-        response = requests.get(url, headers=headers, params=params, allow_redirects=False)
-        response.raise_for_status()  # Check for HTTP errors
-
-        # Attempt to parse the JSON response
-        results = response.json().get("data")
-        if results:
-            [print(c.get("data").get("title")) for c in results.get("children")]
-        else:
-            print("None")
-
-    except requests.exceptions.HTTPError as http_err:
-        print(f"HTTP error occurred: {http_err}")
-    except requests.exceptions.RequestException as req_err:
-        print(f"Request error occurred: {req_err}")
-    except ValueError:
-        print("Error: Unable to decode JSON response")
-    except Exception as e:
-        print(f"An error occurred: {e}")
+        for post in url.get('data').get('children'):
+            print(post.get('data').get('title'))
+    except Exception:
+        print(None)
 
 
 if __name__ == "__main__":
-    top_ten("programming")  # Replace "programming" with the desired subreddit
-
+    top_ten(argv[1])
